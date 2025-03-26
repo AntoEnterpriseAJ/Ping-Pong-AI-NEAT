@@ -10,6 +10,10 @@ from src.trainer.action import Action
 
 class Game:
     def __init__(self):
+        self.screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
+        self.text_font = pygame.font.Font("res/font/PressStart2P-Regular.ttf", 48)
+        self.background = pygame.image.load("res/img/Background.png")
+
         self.ball = Ball(
             pygame.Vector2(config.SCREEN_WIDTH / 2.0, config.SCREEN_HEIGHT / 2.0),
             config.BALL_RADIUS,
@@ -20,29 +24,31 @@ class Game:
             (config.SCREEN_HEIGHT - config.PADDLE_HEIGHT) / 2
         )
 
-        self.ai_vision = np.array([1.0, 0.5, 0.5, 1.0, 0.5])
         self.ai_player = Paddle(
             config.SCREEN_WIDTH - 30,
             (config.SCREEN_HEIGHT - config.PADDLE_HEIGHT) / 2,
             position=Position.RIGHT
         )
 
+        self.player_score = 0
+        self.ai_player_score = 0
+
+        self.ai_vision = np.array([1.0, 0.5, 0.5, 1.0, 0.5])
         self.network = None
 
     def update_network(self, genome, neat_config):
         self.network = neat.nn.FeedForwardNetwork.create(genome, neat_config)
 
-    def run(self, screen):
+    def run(self):
         pygame.init()
-        screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
         clock = pygame.time.Clock()
 
         while True:
             self._poll_events()
-            screen.fill((0, 0, 0))
+            self.screen.blit(self.background, (0, 0))
 
-            self.draw(screen)
-            self.update(screen)
+            self.draw(self.screen)
+            self.update(self.screen)
 
             pygame.display.flip()
             clock.tick(60)
@@ -52,8 +58,29 @@ class Game:
         self.ai_player.draw(screen)
         self.ball.draw(screen)
 
+        text_color = (80, 80, 80)
+
+        self._draw_text(
+            str(self.player_score),
+            text_color,
+            config.SCREEN_WIDTH / 4 - 20,
+            20
+        )
+
+        self._draw_text(
+            str(self.ai_player_score),
+            text_color,
+            config.SCREEN_WIDTH * 3 / 4 + 20,
+            20
+        )
+
     def update(self, screen):
         if not self.player.active or not self.ai_player.active:
+            if not self.player.active:
+                self.ai_player_score += 1
+            else:
+                self.player_score += 1
+
             self._reset()
 
         self.ball.update(training=False)
@@ -92,7 +119,6 @@ class Game:
         self.ai_player.active = True
         self.player.active = True
 
-
     def _poll_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -108,3 +134,7 @@ class Game:
         if keys[pygame.K_s]:
             self.player.rectangle.y = min(self.player.rectangle.y + config.PADDLE_SPEED,
                                           config.SCREEN_HEIGHT - config.PADDLE_HEIGHT)
+
+    def _draw_text(self, text, color, x, y):
+        img = self.text_font.render(text, True, color)
+        self.screen.blit(img, (x, y))
