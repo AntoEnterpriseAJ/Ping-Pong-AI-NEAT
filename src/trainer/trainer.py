@@ -1,8 +1,7 @@
 import neat
 import pygame
-from src import config
-from src.ball import Ball
-from src.paddle import Paddle
+from src.game import config
+from src.trainer.agent import Agent
 
 class Trainer:
     def run_neat(self, config_file):
@@ -29,25 +28,15 @@ class Trainer:
         for genome_id, genome in genomes:
             genome.fitness = 0.0
 
-            paddle = Paddle(genome, neat_config)
-            ball = Ball(pygame.Vector2(config.SCREEN_WIDTH / 2.0, config.SCREEN_HEIGHT / 2.0),
-                        config.BALL_RADIUS, paddle.color)
-
-            agents.append((paddle, ball))
+            agents.append(Agent(genome, neat_config))
 
         while not Trainer._is_extinct(agents):
             self._poll_events()
             screen.fill("purple")
 
-            for paddle, ball in agents:
-                paddle.update(ball)
-                ball.update()
-                paddle.draw(screen)
-                ball.draw(screen)
-
-                vertical_distance = abs(paddle.rectangle.center[1] - ball.circle.center[1])
-                if vertical_distance < paddle.rectangle.height / 2:
-                    paddle.genome.fitness += 0.5
+            for agent in agents:
+                agent.update()
+                agent.draw(screen)
 
             pygame.display.flip()
             clock.tick(60)
@@ -55,8 +44,8 @@ class Trainer:
     @staticmethod
     def _is_extinct(agents):
         is_extinct = True
-        for (paddle, ball) in agents:
-            if paddle.active:
+        for agent in agents:
+            if agent.paddle.active:
                 is_extinct = False
 
         return is_extinct
