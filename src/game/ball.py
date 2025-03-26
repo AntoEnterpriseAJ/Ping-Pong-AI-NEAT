@@ -1,7 +1,7 @@
 import pygame
-import config
+import src.game.config as config
 import numpy as np
-from circle import Circle
+from src.game.circle import Circle
 
 class Ball:
     def __init__(self, center, radius, color = pygame.color.Color("red")):
