@@ -28,7 +28,7 @@ class App:
         clock = pygame.time.Clock()
 
         while True:
-            self.poll_events()
+            self._poll_events()
 
             if self.game_state == GameState.MENU:
                 self.menu.draw(screen)
@@ -37,7 +37,7 @@ class App:
                     "src/trainer/best_genome.pkl", "src/trainer/config-neat.txt"
                 )
                 self.game.update_network(genome, config)
-                self.game.run(screen)
+                self.game.run()
             elif self.game_state == GameState.TRAINING:
                 self.trainer.run_neat("src/trainer/config-neat.txt")
                 self.game_state = GameState.MENU
@@ -45,7 +45,7 @@ class App:
             pygame.display.flip()
             clock.tick(60)
 
-    def poll_events(self):
+    def _poll_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()

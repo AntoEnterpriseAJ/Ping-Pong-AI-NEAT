@@ -20,9 +20,9 @@ class Paddle:
 
     def update(self, ball):
         if self.active:
-            self.handle_collisions(ball)
+            self._handle_collisions(ball)
 
-    def handle_collisions(self, ball):
+    def _handle_collisions(self, ball):
         ball_center = ball.circle.center
         ball_radius = ball.circle.radius
         paddle_center = self.rectangle.center

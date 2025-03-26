@@ -21,6 +21,7 @@ class Trainer:
 
         with open("src/trainer/best_genome.pkl", "wb") as f:
             pickle.dump(best_genome, f)
+            print("saved best genome")
 
     def _eval_genomes(self, genomes, neat_config):
         pygame.init()
