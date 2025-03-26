@@ -12,7 +12,7 @@ This repository implements a ping-pong game with an **AI agent that learns to pl
 
 ## Requirements
 
-- Python 3.7+
+- Python 3.x
 - [Pygame](https://www.pygame.org/news)
 - [NEAT-Python](https://neat-python.readthedocs.io/en/latest/)
 - [NumPy](https://numpy.org/)
@@ -34,7 +34,7 @@ This repository implements a ping-pong game with an **AI agent that learns to pl
 ### Application Modes
 
 - **Menu:** Upon launch, the application displays a menu with two options:
-  - **Play:** Runs the game using a pre-trained AI. If a best genome is saved (see below), it will be loaded and used to control the AI paddle.
+  - **Play:** Runs the game using a pre-trained AI. If a best genome is saved (ensure you have a saved best genome: `best_genome.pkl`), it will be loaded and used to control the AI paddle.
   - **Train:** Initiates the training mode where NEAT evolves the AI. The training process runs for a set number of generations, saving the best genome to `src/trainer/best_genome.pkl`.
 
 - **Manual Play:** In the playing mode, you can control the left paddle using the keyboard:
