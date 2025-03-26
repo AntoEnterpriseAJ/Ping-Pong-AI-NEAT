@@ -1,23 +1,15 @@
 import random
-import neat
-import numpy as np
+
 import pygame
-import config
+from src.game import config
 
 class Paddle:
-    def __init__(self, genome, neat_config):
+    def __init__(self, x, y):
         self.active = True
         self.color = pygame.Color(
             random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)
         )
-
-        self.genome = genome
-        self.network = neat.nn.FeedForwardNetwork.create(genome, neat_config)
-        self.rectangle = pygame.Rect(30, (config.SCREEN_HEIGHT - config.PADDLE_HEIGHT) / 2,
-                                     config.PADDLE_WIDTH, config.PADDLE_HEIGHT)
-
-        # bias, rectangle_center_y, ball_center_y, ball_vel_y, ball_vel_x
-        self.vision = np.array([1.0, 0.5, 0.5, 1.0, 0.5])
+        self.rectangle = pygame.Rect(x, y, config.PADDLE_WIDTH, config.PADDLE_HEIGHT)
 
     def draw(self, screen):
         if self.active:
@@ -25,30 +17,7 @@ class Paddle:
 
     def update(self, ball):
         if self.active:
-            self.think()
-
-            self.vision[1] = self.rectangle.center[1]
-            self.vision[2] = ball.circle.center[1]
-            self.vision[3] = ball.velocity.y
-            self.vision[4] = ball.velocity.x
-
             self.handle_collisions(ball)
-
-    def think(self):
-        actions = {
-            0: "up",
-            1: "none",
-            2: "down"
-        }
-
-        prediction = self.network.activate(self.vision)
-        best_prediction = prediction.index(max(prediction))
-
-        if actions[best_prediction] == "up":
-            self.rectangle.y = max(self.rectangle.y - config.PADDLE_SPEED, 0)
-        elif actions[best_prediction] == "down":
-            self.rectangle.y = min(self.rectangle.y + config.PADDLE_SPEED,
-                                   config.SCREEN_HEIGHT - config.PADDLE_HEIGHT)
 
     def handle_collisions(self, ball):
         ball_center = ball.circle.center
