@@ -5,6 +5,7 @@ import sys
 import neat
 import pygame
 
+import src.game.config as game_config
 from src.app.menu import Menu
 from src.app.game_state import GameState
 from src.game.game import Game
@@ -33,13 +34,16 @@ class App:
             if self.game_state == GameState.MENU:
                 self.menu.draw(screen)
             elif self.game_state == GameState.PLAYING:
+                genome_path = game_config.BASE_PATH / "src/trainer/best_genome.pkl"
+                config_path = game_config.BASE_PATH / "src/trainer/config-neat.txt"
+
                 genome, config = App._load_genome(
-                    "src/trainer/best_genome.pkl", "src/trainer/config-neat.txt"
+                    genome_path, config_path
                 )
                 self.game.update_network(genome, config)
                 self.game.run()
             elif self.game_state == GameState.TRAINING:
-                self.trainer.run_neat("src/trainer/config-neat.txt")
+                self.trainer.run_neat(game_config.BASE_PATH / "src/trainer/config-neat.txt")
                 self.game_state = GameState.MENU
 
             pygame.display.flip()

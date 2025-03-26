@@ -1,3 +1,5 @@
+from pathlib import Path
+
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
 
@@ -7,3 +9,5 @@ PADDLE_SPEED = 10
 
 BALL_RADIUS = 10
 BALL_SPEED = 15
+
+BASE_PATH = Path(__file__).parent.parent.parent

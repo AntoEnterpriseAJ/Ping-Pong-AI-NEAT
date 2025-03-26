@@ -11,8 +11,8 @@ from src.trainer.action import Action
 class Game:
     def __init__(self):
         self.screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
-        self.text_font = pygame.font.Font("res/font/PressStart2P-Regular.ttf", 48)
-        self.background = pygame.image.load("res/img/Background.png")
+        self.text_font = pygame.font.Font(config.BASE_PATH / "res/font/PressStart2P-Regular.ttf", 48)
+        self.background = pygame.image.load(config.BASE_PATH / "res/img/Background.png")
 
         self.ball = Ball(
             pygame.Vector2(config.SCREEN_WIDTH / 2.0, config.SCREEN_HEIGHT / 2.0),

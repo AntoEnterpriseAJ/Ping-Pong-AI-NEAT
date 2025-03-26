@@ -19,7 +19,7 @@ class Trainer:
 
         best_genome = population.run(self._eval_genomes, 100)
 
-        with open("src/trainer/best_genome.pkl", "wb") as f:
+        with open(config.BASE_PATH / "src/trainer/best_genome.pkl", "wb") as f:
             pickle.dump(best_genome, f)
             print("saved best genome")
 
