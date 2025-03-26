@@ -16,8 +16,29 @@ class Ball:
         target_point = pygame.Vector2(0, np.random.random() * config.SCREEN_HEIGHT)
         self.velocity = (target_point - self.circle.center).normalize() * config.BALL_SPEED
 
-    def update(self):
+    def update(self, training = True):
+        ball_center = self.circle.center
+        ball_radius = self.circle.radius
+
         self.circle.center += self.velocity
+
+        if training:
+            if ball_center.x + ball_radius >= config.SCREEN_WIDTH:
+                self.velocity.x = -self.velocity.x
+
+        if ball_center.y - ball_radius <= 0:
+            self.velocity.y = -self.velocity.y
+            self.circle.center[1] = config.BALL_RADIUS
+
+        if ball_center.y + ball_radius >= config.SCREEN_HEIGHT:
+            self.velocity.y = -self.velocity.y
+            self.circle.center[1] = config.SCREEN_HEIGHT - config.BALL_RADIUS
+
+        min_x_velocity = 0.5
+        if abs(self.velocity.x) < min_x_velocity:
+            self.velocity.x = min_x_velocity if self.velocity.x > 0 else -min_x_velocity
+
+        self.velocity = self.velocity.normalize() * config.BALL_SPEED
 
     def draw(self, screen):
         self.circle.draw(screen)
