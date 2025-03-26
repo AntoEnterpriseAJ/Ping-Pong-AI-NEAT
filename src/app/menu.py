@@ -1,5 +1,5 @@
-from src import config
-from src.button import Button
+from src.game import config
+from src.app.button import Button
 
 class Menu:
     def __init__(self):
