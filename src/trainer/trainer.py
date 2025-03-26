@@ -1,5 +1,7 @@
 import neat
 import pygame
+import pickle
+
 from src.game import config
 from src.trainer.agent import Agent
 
@@ -17,7 +19,8 @@ class Trainer:
 
         best_genome = population.run(self._eval_genomes, 100)
 
-        print(f"Best genome:\n{best_genome}")
+        with open("src/trainer/best_genome.pkl", "wb") as f:
+            pickle.dump(best_genome, f)
 
     def _eval_genomes(self, genomes, neat_config):
         pygame.init()
