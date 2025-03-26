@@ -2,10 +2,13 @@ import random
 
 import pygame
 from src.game import config
+from src.game.position import Position
 
 class Paddle:
-    def __init__(self, x, y):
+    def __init__(self, x, y, position = Position.LEFT):
         self.active = True
+        self.position = position
+
         self.color = pygame.Color(
             random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)
         )
@@ -53,18 +56,9 @@ class Paddle:
 
             ball.velocity = new_velocity.normalize() * config.BALL_SPEED
 
-        if ball_center.x - ball_radius <= 0:
-            self.active = False
-
-        if ball_center.x + ball_radius >= config.SCREEN_WIDTH:
-            ball.velocity.x = -ball.velocity.x
-
-        if ball_center.y - ball_radius <= 0 or \
-                ball_center.y + ball_radius >= config.SCREEN_HEIGHT:
-            ball.velocity.y = -ball.velocity.y
-
-            min_x_velocity = 0.5
-            if abs(ball.velocity.x) < min_x_velocity:
-                ball.velocity.x = min_x_velocity if ball.velocity.x > 0 else -min_x_velocity
-
-            ball.velocity = ball.velocity.normalize() * config.BALL_SPEED
+        if self.position == Position.LEFT:
+            if ball_center.x - ball_radius <= 0:
+                self.active = False
+        else:
+            if ball_center.x + ball_radius >= config.SCREEN_WIDTH:
+                self.active = False
