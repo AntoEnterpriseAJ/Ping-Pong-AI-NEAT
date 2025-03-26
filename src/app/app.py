@@ -1,8 +1,8 @@
 import pygame
 
-from menu import Menu
-from game_state import GameState
-from src.trainer import Trainer
+from src.app.menu import Menu
+from src.app.game_state import GameState
+from src.trainer.trainer import Trainer
 
 class App:
     def __init__(self):
@@ -28,7 +28,7 @@ class App:
             elif self.game_state == GameState.PLAYING:
                 print("playing")
             elif self.game_state == GameState.TRAINING:
-                self.trainer.run_neat("src/config-neat.txt")
+                self.trainer.run_neat("src/trainer/config-neat.txt")
                 print("training")
 
             pygame.display.flip()
