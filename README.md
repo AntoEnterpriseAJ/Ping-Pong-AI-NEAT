@@ -4,6 +4,10 @@
 
 This repository implements a ping-pong game with an **AI agent that learns to play using the NEAT (NeuroEvolution of Augmenting Topologies) algorithm**. Built with Python, Pygame, and NEAT-Python, the project provides both a training mode—where the AI evolves through gameplay—and a play mode, where you can play with the trained AI.
 
+https://github.com/user-attachments/assets/e7063514-6393-4a45-b098-a859df960df1
+
+https://github.com/user-attachments/assets/5cdb6561-6abe-4754-88ca-feb40cecd2f4
+
 ## Features
 
 - **NEAT-based AI Training:** Evolve and train an AI agent to control the paddle by rewarding successful paddle-ball interactions.
